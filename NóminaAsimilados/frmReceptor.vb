@@ -26,11 +26,11 @@
             Me.CFDIEmpleadosNominaBindingSource.EndEdit()
             Me.CFDI_Empleados_NominaTableAdapter.Update(Me.ProductionVDataSet.CFDI_Empleados_Nomina)
             Me.ProductionVDataSet.GetChanges()
-            MsgBox("Actualización exitosa...")
+            MsgBox("Actualización exitosa...", MsgBoxStyle.Exclamation)
             'vacias_controles()
             Me.CFDI_Empleados_NominaTableAdapter.Fill(Me.ProductionVDataSet.CFDI_Empleados_Nomina)
         Catch ex As Exception
-            MsgBox("Error al actualizar registro..." + vbNewLine(2), ex.ToString)
+            MsgBox("Error al actualizar registro..." + vbNewLine(2), ex.ToString, MsgBoxStyle.Exclamation)
         End Try
     End Sub
 
@@ -54,11 +54,11 @@
             End If
             'CFDI_Empleados_NominaTableAdapter.Insert(txtNumEmpleado.Text, txtRFC.Text, cmbNombre.SelectedValue, cmbTipoContrato.SelectedValue, CBool(val), cmbTipoRegimen.SelectedValue, cmbPeriodicidadPago.SelectedValue, cmbClaveEntidad.SelectedValue, txtCURP.Text)
             CFDI_Empleados_NominaTableAdapter.Insert(txtNumEmpleado.Text, txtRFC.Text, cmbNombre.Text, cmbTipoContrato.SelectedValue, CBool(val), cmbTipoRegimen.SelectedValue, cmbPeriodicidadPago.SelectedValue, txtCURP.Text, cmbClaveEntidad.SelectedValue, MailTextBox.Text, Seguro_socialTextBox.Text)
-            MsgBox("Inserción exitosa...")
+            MsgBox("Inserción exitosa...", MsgBoxStyle.Exclamation)
             Me.CFDI_Empleados_NominaTableAdapter.Fill(Me.ProductionVDataSet.CFDI_Empleados_Nomina)
             vacias_controles()
         Catch ex As Exception
-            MsgBox("Error al insertar nuevo registro..." + vbNewLine(2), ex.ToString)
+            MsgBox("Error al insertar nuevo registro..." + vbNewLine(2), ex.ToString, MsgBoxStyle.Exclamation)
         End Try
     End Sub
 
@@ -77,6 +77,7 @@
         cmbTipoRegimen.SelectedIndex = -1
         cmbPeriodicidadPago.SelectedIndex = -1
         cmbClaveEntidad.SelectedIndex = -1
+        NombreTextBox.Text = ""
     End Sub
 
     Private Sub cmbNombre_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbNombre.SelectedIndexChanged

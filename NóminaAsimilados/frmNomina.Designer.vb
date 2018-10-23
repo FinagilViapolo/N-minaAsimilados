@@ -67,6 +67,8 @@ Partial Class frmNomina
         Me.cmbTipoNomina = New System.Windows.Forms.ComboBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.txtImporteExcento = New System.Windows.Forms.TextBox()
+        Me.txtImporteGravado = New System.Windows.Forms.TextBox()
         Me.btnEliminarPercepcion = New System.Windows.Forms.Button()
         Me.btnAgregarPercepcion = New System.Windows.Forms.Button()
         Me.txtTotalGravado = New System.Windows.Forms.TextBox()
@@ -75,9 +77,7 @@ Partial Class frmNomina
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
-        Me.txtImporteExcento = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.txtImporteGravado = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.cmbConceptoPercepcion = New System.Windows.Forms.ComboBox()
         Me.CFDITipoPercepcionNominaBindingSource = New System.Windows.Forms.BindingSource(Me.components)
@@ -131,8 +131,13 @@ Partial Class frmNomina
         Me.cmbRFCSubcontrata = New System.Windows.Forms.ComboBox()
         Me.Label18 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Label19 = New System.Windows.Forms.Label()
         Me.cmbProSubcontratación = New System.Windows.Forms.ComboBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.lblTimer = New System.Windows.Forms.Label()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.txtTotalAPagar = New System.Windows.Forms.TextBox()
+        Me.lblEmisor = New System.Windows.Forms.Label()
         RFCLabel = New System.Windows.Forms.Label()
         TipoContratoLabel = New System.Windows.Forms.Label()
         SindicalizadoLabel = New System.Windows.Forms.Label()
@@ -252,6 +257,8 @@ Partial Class frmNomina
         '
         'gbEmisor
         '
+        Me.gbEmisor.Controls.Add(Me.lblEmisor)
+        Me.gbEmisor.Controls.Add(Me.lblTimer)
         Me.gbEmisor.Controls.Add(Me.dtpFechaEmision)
         Me.gbEmisor.Controls.Add(Me.rbArfin)
         Me.gbEmisor.Controls.Add(Me.rbFinagil)
@@ -264,7 +271,7 @@ Partial Class frmNomina
         '
         'dtpFechaEmision
         '
-        Me.dtpFechaEmision.Location = New System.Drawing.Point(498, 12)
+        Me.dtpFechaEmision.Location = New System.Drawing.Point(408, 13)
         Me.dtpFechaEmision.Name = "dtpFechaEmision"
         Me.dtpFechaEmision.Size = New System.Drawing.Size(200, 20)
         Me.dtpFechaEmision.TabIndex = 2
@@ -272,7 +279,7 @@ Partial Class frmNomina
         'rbArfin
         '
         Me.rbArfin.AutoSize = True
-        Me.rbArfin.Location = New System.Drawing.Point(184, 12)
+        Me.rbArfin.Location = New System.Drawing.Point(90, 14)
         Me.rbArfin.Name = "rbArfin"
         Me.rbArfin.Size = New System.Drawing.Size(46, 17)
         Me.rbArfin.TabIndex = 1
@@ -283,7 +290,7 @@ Partial Class frmNomina
         '
         Me.rbFinagil.AutoSize = True
         Me.rbFinagil.Checked = True
-        Me.rbFinagil.Location = New System.Drawing.Point(112, 12)
+        Me.rbFinagil.Location = New System.Drawing.Point(18, 14)
         Me.rbFinagil.Name = "rbFinagil"
         Me.rbFinagil.Size = New System.Drawing.Size(55, 17)
         Me.rbFinagil.TabIndex = 0
@@ -355,9 +362,9 @@ Partial Class frmNomina
         '
         'btnActualizar
         '
-        Me.btnActualizar.Location = New System.Drawing.Point(622, 13)
+        Me.btnActualizar.Location = New System.Drawing.Point(594, 13)
         Me.btnActualizar.Name = "btnActualizar"
-        Me.btnActualizar.Size = New System.Drawing.Size(75, 23)
+        Me.btnActualizar.Size = New System.Drawing.Size(103, 23)
         Me.btnActualizar.TabIndex = 5
         Me.btnActualizar.Text = "Actualizar"
         Me.btnActualizar.UseVisualStyleBackColor = True
@@ -444,11 +451,11 @@ Partial Class frmNomina
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(541, 13)
+        Me.Button1.Location = New System.Drawing.Point(490, 13)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.Size = New System.Drawing.Size(98, 23)
         Me.Button1.TabIndex = 4
-        Me.Button1.Text = "Nuevo"
+        Me.Button1.Text = "Nuevo/Modificar"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'cmbNombre
@@ -458,7 +465,7 @@ Partial Class frmNomina
         Me.cmbNombre.FormattingEnabled = True
         Me.cmbNombre.Location = New System.Drawing.Point(90, 15)
         Me.cmbNombre.Name = "cmbNombre"
-        Me.cmbNombre.Size = New System.Drawing.Size(445, 21)
+        Me.cmbNombre.Size = New System.Drawing.Size(394, 21)
         Me.cmbNombre.TabIndex = 3
         '
         'CFDIEmpleadosNominaBindingSource1
@@ -481,7 +488,7 @@ Partial Class frmNomina
         Me.gbNomina.Location = New System.Drawing.Point(13, 244)
         Me.gbNomina.Name = "gbNomina"
         Me.gbNomina.Size = New System.Drawing.Size(715, 79)
-        Me.gbNomina.TabIndex = 4
+        Me.gbNomina.TabIndex = 8
         Me.gbNomina.TabStop = False
         Me.gbNomina.Text = "Datos Nómina"
         '
@@ -490,7 +497,7 @@ Partial Class frmNomina
         Me.txtDiasPagados.Location = New System.Drawing.Point(236, 19)
         Me.txtDiasPagados.Name = "txtDiasPagados"
         Me.txtDiasPagados.Size = New System.Drawing.Size(42, 20)
-        Me.txtDiasPagados.TabIndex = 7
+        Me.txtDiasPagados.TabIndex = 9
         Me.txtDiasPagados.Text = "1"
         '
         'Label5
@@ -516,12 +523,12 @@ Partial Class frmNomina
         Me.dtpFechaFinPago.Location = New System.Drawing.Point(487, 46)
         Me.dtpFechaFinPago.Name = "dtpFechaFinPago"
         Me.dtpFechaFinPago.Size = New System.Drawing.Size(200, 20)
-        Me.dtpFechaFinPago.TabIndex = 10
+        Me.dtpFechaFinPago.TabIndex = 12
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(399, 26)
+        Me.Label3.Location = New System.Drawing.Point(24, 51)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(82, 13)
         Me.Label3.TabIndex = 5
@@ -529,15 +536,15 @@ Partial Class frmNomina
         '
         'dtpFechaIniPago
         '
-        Me.dtpFechaIniPago.Location = New System.Drawing.Point(487, 21)
+        Me.dtpFechaIniPago.Location = New System.Drawing.Point(112, 46)
         Me.dtpFechaIniPago.Name = "dtpFechaIniPago"
         Me.dtpFechaIniPago.Size = New System.Drawing.Size(200, 20)
-        Me.dtpFechaIniPago.TabIndex = 9
+        Me.dtpFechaIniPago.TabIndex = 11
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(7, 53)
+        Me.Label2.Location = New System.Drawing.Point(419, 25)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(65, 13)
         Me.Label2.TabIndex = 3
@@ -545,10 +552,10 @@ Partial Class frmNomina
         '
         'dtpFechaPago
         '
-        Me.dtpFechaPago.Location = New System.Drawing.Point(78, 47)
+        Me.dtpFechaPago.Location = New System.Drawing.Point(486, 19)
         Me.dtpFechaPago.Name = "dtpFechaPago"
         Me.dtpFechaPago.Size = New System.Drawing.Size(200, 20)
-        Me.dtpFechaPago.TabIndex = 8
+        Me.dtpFechaPago.TabIndex = 10
         '
         'Label1
         '
@@ -566,7 +573,7 @@ Partial Class frmNomina
         Me.cmbTipoNomina.Location = New System.Drawing.Point(78, 19)
         Me.cmbTipoNomina.Name = "cmbTipoNomina"
         Me.cmbTipoNomina.Size = New System.Drawing.Size(36, 21)
-        Me.cmbTipoNomina.TabIndex = 6
+        Me.cmbTipoNomina.TabIndex = 8
         Me.cmbTipoNomina.Text = "O"
         '
         'TabControl1
@@ -577,10 +584,12 @@ Partial Class frmNomina
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(715, 241)
-        Me.TabControl1.TabIndex = 11
+        Me.TabControl1.TabIndex = 13
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.txtImporteExcento)
+        Me.TabPage1.Controls.Add(Me.txtImporteGravado)
         Me.TabPage1.Controls.Add(Me.btnEliminarPercepcion)
         Me.TabPage1.Controls.Add(Me.btnAgregarPercepcion)
         Me.TabPage1.Controls.Add(Me.txtTotalGravado)
@@ -589,9 +598,7 @@ Partial Class frmNomina
         Me.TabPage1.Controls.Add(Me.Label13)
         Me.TabPage1.Controls.Add(Me.Label12)
         Me.TabPage1.Controls.Add(Me.Label11)
-        Me.TabPage1.Controls.Add(Me.txtImporteExcento)
         Me.TabPage1.Controls.Add(Me.Label10)
-        Me.TabPage1.Controls.Add(Me.txtImporteGravado)
         Me.TabPage1.Controls.Add(Me.Label9)
         Me.TabPage1.Controls.Add(Me.cmbConceptoPercepcion)
         Me.TabPage1.Controls.Add(Me.Label8)
@@ -608,13 +615,29 @@ Partial Class frmNomina
         Me.TabPage1.Text = "Percepciones"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'txtImporteExcento
+        '
+        Me.txtImporteExcento.Location = New System.Drawing.Point(134, 119)
+        Me.txtImporteExcento.Name = "txtImporteExcento"
+        Me.txtImporteExcento.Size = New System.Drawing.Size(121, 20)
+        Me.txtImporteExcento.TabIndex = 18
+        Me.txtImporteExcento.Text = "0"
+        '
+        'txtImporteGravado
+        '
+        Me.txtImporteGravado.Location = New System.Drawing.Point(134, 93)
+        Me.txtImporteGravado.Name = "txtImporteGravado"
+        Me.txtImporteGravado.Size = New System.Drawing.Size(121, 20)
+        Me.txtImporteGravado.TabIndex = 17
+        Me.txtImporteGravado.Text = "0"
+        '
         'btnEliminarPercepcion
         '
         Me.btnEliminarPercepcion.Enabled = False
         Me.btnEliminarPercepcion.Location = New System.Drawing.Point(619, 145)
         Me.btnEliminarPercepcion.Name = "btnEliminarPercepcion"
         Me.btnEliminarPercepcion.Size = New System.Drawing.Size(75, 23)
-        Me.btnEliminarPercepcion.TabIndex = 16
+        Me.btnEliminarPercepcion.TabIndex = 21
         Me.btnEliminarPercepcion.Text = "Eliminar"
         Me.btnEliminarPercepcion.UseVisualStyleBackColor = True
         '
@@ -623,7 +646,7 @@ Partial Class frmNomina
         Me.btnAgregarPercepcion.Location = New System.Drawing.Point(180, 145)
         Me.btnAgregarPercepcion.Name = "btnAgregarPercepcion"
         Me.btnAgregarPercepcion.Size = New System.Drawing.Size(75, 23)
-        Me.btnAgregarPercepcion.TabIndex = 15
+        Me.btnAgregarPercepcion.TabIndex = 19
         Me.btnAgregarPercepcion.Text = "Agregar"
         Me.btnAgregarPercepcion.UseVisualStyleBackColor = True
         '
@@ -634,7 +657,7 @@ Partial Class frmNomina
         Me.txtTotalGravado.Name = "txtTotalGravado"
         Me.txtTotalGravado.ReadOnly = True
         Me.txtTotalGravado.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalGravado.TabIndex = 17
+        Me.txtTotalGravado.TabIndex = 23
         Me.txtTotalGravado.Text = "0"
         '
         'txtTotalExento
@@ -644,7 +667,7 @@ Partial Class frmNomina
         Me.txtTotalExento.Name = "txtTotalExento"
         Me.txtTotalExento.ReadOnly = True
         Me.txtTotalExento.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalExento.TabIndex = 16
+        Me.txtTotalExento.TabIndex = 24
         Me.txtTotalExento.Text = "0"
         '
         'txtTotalSueldos
@@ -654,7 +677,7 @@ Partial Class frmNomina
         Me.txtTotalSueldos.Name = "txtTotalSueldos"
         Me.txtTotalSueldos.ReadOnly = True
         Me.txtTotalSueldos.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalSueldos.TabIndex = 15
+        Me.txtTotalSueldos.TabIndex = 22
         Me.txtTotalSueldos.Text = "0"
         '
         'Label13
@@ -684,14 +707,6 @@ Partial Class frmNomina
         Me.Label11.TabIndex = 12
         Me.Label11.Text = "Total sueldos:"
         '
-        'txtImporteExcento
-        '
-        Me.txtImporteExcento.Location = New System.Drawing.Point(134, 119)
-        Me.txtImporteExcento.Name = "txtImporteExcento"
-        Me.txtImporteExcento.Size = New System.Drawing.Size(121, 20)
-        Me.txtImporteExcento.TabIndex = 14
-        Me.txtImporteExcento.Text = "0"
-        '
         'Label10
         '
         Me.Label10.AutoSize = True
@@ -700,14 +715,6 @@ Partial Class frmNomina
         Me.Label10.Size = New System.Drawing.Size(80, 13)
         Me.Label10.TabIndex = 10
         Me.Label10.Text = "Importe exento:"
-        '
-        'txtImporteGravado
-        '
-        Me.txtImporteGravado.Location = New System.Drawing.Point(134, 93)
-        Me.txtImporteGravado.Name = "txtImporteGravado"
-        Me.txtImporteGravado.Size = New System.Drawing.Size(121, 20)
-        Me.txtImporteGravado.TabIndex = 13
-        Me.txtImporteGravado.Text = "0"
         '
         'Label9
         '
@@ -727,7 +734,7 @@ Partial Class frmNomina
         Me.cmbConceptoPercepcion.Location = New System.Drawing.Point(134, 66)
         Me.cmbConceptoPercepcion.Name = "cmbConceptoPercepcion"
         Me.cmbConceptoPercepcion.Size = New System.Drawing.Size(121, 21)
-        Me.cmbConceptoPercepcion.TabIndex = 7
+        Me.cmbConceptoPercepcion.TabIndex = 16
         Me.cmbConceptoPercepcion.ValueMember = "Descripcion"
         '
         'CFDITipoPercepcionNominaBindingSource
@@ -753,7 +760,7 @@ Partial Class frmNomina
         Me.cmbClavePercepcion.Location = New System.Drawing.Point(134, 39)
         Me.cmbClavePercepcion.Name = "cmbClavePercepcion"
         Me.cmbClavePercepcion.Size = New System.Drawing.Size(121, 21)
-        Me.cmbClavePercepcion.TabIndex = 5
+        Me.cmbClavePercepcion.TabIndex = 15
         Me.cmbClavePercepcion.ValueMember = "TipoPercepcion"
         '
         'Label7
@@ -774,7 +781,7 @@ Partial Class frmNomina
         Me.cmbTipoPercepcion.Location = New System.Drawing.Point(134, 12)
         Me.cmbTipoPercepcion.Name = "cmbTipoPercepcion"
         Me.cmbTipoPercepcion.Size = New System.Drawing.Size(121, 21)
-        Me.cmbTipoPercepcion.TabIndex = 12
+        Me.cmbTipoPercepcion.TabIndex = 14
         Me.cmbTipoPercepcion.ValueMember = "TipoPercepcion"
         '
         'dgvPercepcion
@@ -787,7 +794,7 @@ Partial Class frmNomina
         Me.dgvPercepcion.Name = "dgvPercepcion"
         Me.dgvPercepcion.ReadOnly = True
         Me.dgvPercepcion.Size = New System.Drawing.Size(433, 127)
-        Me.dgvPercepcion.TabIndex = 2
+        Me.dgvPercepcion.TabIndex = 20
         '
         'Column1
         '
@@ -859,7 +866,7 @@ Partial Class frmNomina
         Me.btnEliminaDeduccion.Location = New System.Drawing.Point(619, 145)
         Me.btnEliminaDeduccion.Name = "btnEliminaDeduccion"
         Me.btnEliminaDeduccion.Size = New System.Drawing.Size(75, 23)
-        Me.btnEliminaDeduccion.TabIndex = 20
+        Me.btnEliminaDeduccion.TabIndex = 31
         Me.btnEliminaDeduccion.Text = "Eliminar"
         Me.btnEliminaDeduccion.UseVisualStyleBackColor = True
         '
@@ -868,7 +875,7 @@ Partial Class frmNomina
         Me.btnAgregarDeduccion.Location = New System.Drawing.Point(180, 119)
         Me.btnAgregarDeduccion.Name = "btnAgregarDeduccion"
         Me.btnAgregarDeduccion.Size = New System.Drawing.Size(75, 23)
-        Me.btnAgregarDeduccion.TabIndex = 19
+        Me.btnAgregarDeduccion.TabIndex = 29
         Me.btnAgregarDeduccion.Text = "Agregar"
         Me.btnAgregarDeduccion.UseVisualStyleBackColor = True
         '
@@ -879,7 +886,7 @@ Partial Class frmNomina
         Me.txtTotalOtrasDeducciones.Name = "txtTotalOtrasDeducciones"
         Me.txtTotalOtrasDeducciones.ReadOnly = True
         Me.txtTotalOtrasDeducciones.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalOtrasDeducciones.TabIndex = 36
+        Me.txtTotalOtrasDeducciones.TabIndex = 32
         Me.txtTotalOtrasDeducciones.Text = "0"
         '
         'txtTotalImpuestosRetenidos
@@ -889,7 +896,7 @@ Partial Class frmNomina
         Me.txtTotalImpuestosRetenidos.Name = "txtTotalImpuestosRetenidos"
         Me.txtTotalImpuestosRetenidos.ReadOnly = True
         Me.txtTotalImpuestosRetenidos.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalImpuestosRetenidos.TabIndex = 35
+        Me.txtTotalImpuestosRetenidos.TabIndex = 33
         Me.txtTotalImpuestosRetenidos.Text = "0"
         '
         'Label16
@@ -915,7 +922,7 @@ Partial Class frmNomina
         Me.txtImporteDeduccion.Location = New System.Drawing.Point(134, 93)
         Me.txtImporteDeduccion.Name = "txtImporteDeduccion"
         Me.txtImporteDeduccion.Size = New System.Drawing.Size(121, 20)
-        Me.txtImporteDeduccion.TabIndex = 18
+        Me.txtImporteDeduccion.TabIndex = 28
         Me.txtImporteDeduccion.Text = "0"
         '
         'Label20
@@ -931,11 +938,12 @@ Partial Class frmNomina
         '
         Me.cmbConceptoDeduccion.DataSource = Me.CFDITipoDeduccionNominaBindingSource
         Me.cmbConceptoDeduccion.DisplayMember = "Descripcion"
+        Me.cmbConceptoDeduccion.Enabled = False
         Me.cmbConceptoDeduccion.FormattingEnabled = True
         Me.cmbConceptoDeduccion.Location = New System.Drawing.Point(134, 66)
         Me.cmbConceptoDeduccion.Name = "cmbConceptoDeduccion"
         Me.cmbConceptoDeduccion.Size = New System.Drawing.Size(121, 21)
-        Me.cmbConceptoDeduccion.TabIndex = 26
+        Me.cmbConceptoDeduccion.TabIndex = 27
         Me.cmbConceptoDeduccion.ValueMember = "Descripcion"
         '
         'CFDITipoDeduccionNominaBindingSource
@@ -961,7 +969,7 @@ Partial Class frmNomina
         Me.cmbClaveDeduccion.Location = New System.Drawing.Point(134, 39)
         Me.cmbClaveDeduccion.Name = "cmbClaveDeduccion"
         Me.cmbClaveDeduccion.Size = New System.Drawing.Size(121, 21)
-        Me.cmbClaveDeduccion.TabIndex = 24
+        Me.cmbClaveDeduccion.TabIndex = 26
         Me.cmbClaveDeduccion.ValueMember = "TipoDeduccion"
         '
         'Label22
@@ -982,7 +990,7 @@ Partial Class frmNomina
         Me.cmbTipoDeduccion.Location = New System.Drawing.Point(134, 12)
         Me.cmbTipoDeduccion.Name = "cmbTipoDeduccion"
         Me.cmbTipoDeduccion.Size = New System.Drawing.Size(121, 21)
-        Me.cmbTipoDeduccion.TabIndex = 17
+        Me.cmbTipoDeduccion.TabIndex = 25
         Me.cmbTipoDeduccion.ValueMember = "TipoDeduccion"
         '
         'dgrDeducciones
@@ -995,7 +1003,7 @@ Partial Class frmNomina
         Me.dgrDeducciones.Name = "dgrDeducciones"
         Me.dgrDeducciones.ReadOnly = True
         Me.dgrDeducciones.Size = New System.Drawing.Size(433, 127)
-        Me.dgrDeducciones.TabIndex = 21
+        Me.dgrDeducciones.TabIndex = 30
         '
         'DataGridViewTextBoxColumn1
         '
@@ -1033,7 +1041,7 @@ Partial Class frmNomina
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(293, 587)
+        Me.Label14.Location = New System.Drawing.Point(293, 578)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(98, 13)
         Me.Label14.TabIndex = 6
@@ -1042,7 +1050,7 @@ Partial Class frmNomina
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(517, 587)
+        Me.Label15.Location = New System.Drawing.Point(517, 578)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(101, 13)
         Me.Label15.TabIndex = 7
@@ -1051,21 +1059,21 @@ Partial Class frmNomina
         'txtTotalDeducciones
         '
         Me.txtTotalDeducciones.Enabled = False
-        Me.txtTotalDeducciones.Location = New System.Drawing.Point(397, 584)
+        Me.txtTotalDeducciones.Location = New System.Drawing.Point(397, 575)
         Me.txtTotalDeducciones.Name = "txtTotalDeducciones"
         Me.txtTotalDeducciones.ReadOnly = True
         Me.txtTotalDeducciones.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalDeducciones.TabIndex = 8
+        Me.txtTotalDeducciones.TabIndex = 36
         Me.txtTotalDeducciones.Text = "0"
         '
         'txtTotalPercepciones
         '
         Me.txtTotalPercepciones.Enabled = False
-        Me.txtTotalPercepciones.Location = New System.Drawing.Point(624, 584)
+        Me.txtTotalPercepciones.Location = New System.Drawing.Point(624, 575)
         Me.txtTotalPercepciones.Name = "txtTotalPercepciones"
         Me.txtTotalPercepciones.ReadOnly = True
         Me.txtTotalPercepciones.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalPercepciones.TabIndex = 9
+        Me.txtTotalPercepciones.TabIndex = 37
         Me.txtTotalPercepciones.Text = "0"
         '
         'StatusStrip1
@@ -1079,26 +1087,30 @@ Partial Class frmNomina
         '
         'ToolStripStatusLabel1
         '
+        Me.ToolStripStatusLabel1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(35, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(39, 17)
         Me.ToolStripStatusLabel1.Text = "Serie:"
         '
         'tssSerie
         '
+        Me.tssSerie.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.tssSerie.Name = "tssSerie"
-        Me.tssSerie.Size = New System.Drawing.Size(120, 17)
+        Me.tssSerie.Size = New System.Drawing.Size(128, 17)
         Me.tssSerie.Text = "ToolStripStatusLabel3"
         '
         'ToolStripStatusLabel2
         '
+        Me.ToolStripStatusLabel2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
         Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(36, 17)
         Me.ToolStripStatusLabel2.Text = "Folio:"
         '
         'tssFolio
         '
+        Me.tssFolio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.tssFolio.Name = "tssFolio"
-        Me.tssFolio.Size = New System.Drawing.Size(120, 17)
+        Me.tssFolio.Size = New System.Drawing.Size(128, 17)
         Me.tssFolio.Text = "ToolStripStatusLabel3"
         '
         'CFDI_Empleados_NominaTableAdapter
@@ -1110,7 +1122,7 @@ Partial Class frmNomina
         Me.btnLimpiar.Location = New System.Drawing.Point(18, 583)
         Me.btnLimpiar.Name = "btnLimpiar"
         Me.btnLimpiar.Size = New System.Drawing.Size(75, 23)
-        Me.btnLimpiar.TabIndex = 22
+        Me.btnLimpiar.TabIndex = 35
         Me.btnLimpiar.Text = "Limpiar"
         Me.btnLimpiar.UseVisualStyleBackColor = True
         '
@@ -1119,7 +1131,7 @@ Partial Class frmNomina
         Me.btnEmitirCFDI.Location = New System.Drawing.Point(118, 583)
         Me.btnEmitirCFDI.Name = "btnEmitirCFDI"
         Me.btnEmitirCFDI.Size = New System.Drawing.Size(75, 23)
-        Me.btnEmitirCFDI.TabIndex = 21
+        Me.btnEmitirCFDI.TabIndex = 34
         Me.btnEmitirCFDI.Text = "Emitir CFDI"
         Me.btnEmitirCFDI.UseVisualStyleBackColor = True
         '
@@ -1154,7 +1166,7 @@ Partial Class frmNomina
         Me.cmbRFCSubcontrata.Location = New System.Drawing.Point(313, 15)
         Me.cmbRFCSubcontrata.Name = "cmbRFCSubcontrata"
         Me.cmbRFCSubcontrata.Size = New System.Drawing.Size(91, 21)
-        Me.cmbRFCSubcontrata.TabIndex = 23
+        Me.cmbRFCSubcontrata.TabIndex = 6
         Me.cmbRFCSubcontrata.Text = "NO APLICA"
         '
         'Label18
@@ -1175,9 +1187,20 @@ Partial Class frmNomina
         Me.GroupBox1.Location = New System.Drawing.Point(13, 194)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(715, 47)
-        Me.GroupBox1.TabIndex = 25
+        Me.GroupBox1.TabIndex = 6
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Subcontratación:"
+        '
+        'cmbProSubcontratación
+        '
+        Me.cmbProSubcontratación.Enabled = False
+        Me.cmbProSubcontratación.FormattingEnabled = True
+        Me.cmbProSubcontratación.Items.AddRange(New Object() {"10", "25", "50", "75", "100"})
+        Me.cmbProSubcontratación.Location = New System.Drawing.Point(634, 15)
+        Me.cmbProSubcontratación.Name = "cmbProSubcontratación"
+        Me.cmbProSubcontratación.Size = New System.Drawing.Size(52, 21)
+        Me.cmbProSubcontratación.TabIndex = 7
+        Me.cmbProSubcontratación.Text = "100"
         '
         'Label19
         '
@@ -1188,22 +1211,54 @@ Partial Class frmNomina
         Me.Label19.TabIndex = 26
         Me.Label19.Text = "Porcentaje de subcontratación:"
         '
-        'cmbProSubcontratación
+        'lblTimer
         '
-        Me.cmbProSubcontratación.Enabled = False
-        Me.cmbProSubcontratación.FormattingEnabled = True
-        Me.cmbProSubcontratación.Items.AddRange(New Object() {"10", "25", "50", "75", "100"})
-        Me.cmbProSubcontratación.Location = New System.Drawing.Point(634, 15)
-        Me.cmbProSubcontratación.Name = "cmbProSubcontratación"
-        Me.cmbProSubcontratación.Size = New System.Drawing.Size(52, 21)
-        Me.cmbProSubcontratación.TabIndex = 27
-        Me.cmbProSubcontratación.Text = "100"
+        Me.lblTimer.AutoSize = True
+        Me.lblTimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTimer.Location = New System.Drawing.Point(628, 16)
+        Me.lblTimer.Name = "lblTimer"
+        Me.lblTimer.Size = New System.Drawing.Size(52, 13)
+        Me.lblTimer.TabIndex = 3
+        Me.lblTimer.Text = "Label24"
+        '
+        'Timer1
+        '
+        Me.Timer1.Enabled = True
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(545, 604)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(73, 13)
+        Me.Label24.TabIndex = 38
+        Me.Label24.Text = "Total a pagar:"
+        '
+        'txtTotalAPagar
+        '
+        Me.txtTotalAPagar.BackColor = System.Drawing.SystemColors.Control
+        Me.txtTotalAPagar.Enabled = False
+        Me.txtTotalAPagar.Location = New System.Drawing.Point(624, 601)
+        Me.txtTotalAPagar.Name = "txtTotalAPagar"
+        Me.txtTotalAPagar.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalAPagar.TabIndex = 39
+        '
+        'lblEmisor
+        '
+        Me.lblEmisor.AutoSize = True
+        Me.lblEmisor.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEmisor.Location = New System.Drawing.Point(143, 16)
+        Me.lblEmisor.Name = "lblEmisor"
+        Me.lblEmisor.Size = New System.Drawing.Size(0, 13)
+        Me.lblEmisor.TabIndex = 4
         '
         'frmNomina
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(742, 650)
+        Me.Controls.Add(Me.txtTotalAPagar)
+        Me.Controls.Add(Me.Label24)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.btnEmitirCFDI)
         Me.Controls.Add(Me.btnLimpiar)
@@ -1346,4 +1401,9 @@ Partial Class frmNomina
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label19 As Label
     Friend WithEvents cmbProSubcontratación As ComboBox
+    Friend WithEvents lblTimer As Label
+    Friend WithEvents Timer1 As Timer
+    Friend WithEvents Label24 As Label
+    Friend WithEvents txtTotalAPagar As TextBox
+    Friend WithEvents lblEmisor As Label
 End Class

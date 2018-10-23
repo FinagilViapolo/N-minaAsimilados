@@ -26,9 +26,11 @@
         If rbFinagil.Checked = True Then
             tssFolio.Text = taLlaves.Folio_Finagil
             tssSerie.Text = "FIN"
+            lblEmisor.Text = "Emisor: FINAGIL S.A. DE C.V. SOFOM ENR"
         Else
             tssFolio.Text = taLlaves.Folio_Arfin
             tssSerie.Text = "SAT"
+            lblEmisor.Text = "Emisor: SERVICIOS ARFIN S.A. DE C.V."
         End If
         dtpFechaEmision.MinDate = Now.AddDays(-3)
         dtpFechaEmision.MaxDate = Now
@@ -39,370 +41,393 @@
         If rbFinagil.Checked = True Then
             tssFolio.Text = taLlaves.Folio_Finagil
             tssSerie.Text = "FIN"
+            lblEmisor.Text = "Emisor: FINAGIL S.A. DE C.V. SOFOM ENR"
         Else
             tssFolio.Text = taLlaves.Folio_Arfin
             tssSerie.Text = "SAT"
+            lblEmisor.Text = "Emisor: SERVICIOS ARFIN S.A. DE C.V."
         End If
     End Sub
 
     Private Sub btnEmitirCFDI_Click(sender As Object, e As EventArgs) Handles btnEmitirCFDI.Click
-        Dim newrowArfin As ProductionVDataSet.CFDI_Encabezado_NominaRow
-        newrowArfin = Me.ProductionVDataSet.CFDI_Encabezado_Nomina.NewCFDI_Encabezado_NominaRow
+        If cmbNombre.Text <> "" Then
+            If MsgBox("Está por emitir el CFDI: " + tssSerie.Text + " - " + tssFolio.Text + vbNewLine + "Emisor: " + lblEmisor.Text + vbNewLine + "Receptor: " + cmbNombre.Text, MsgBoxStyle.YesNoCancel) = MsgBoxResult.Yes Then
+                Dim newrowArfin As ProductionVDataSet.CFDI_Encabezado_NominaRow
+                newrowArfin = Me.ProductionVDataSet.CFDI_Encabezado_Nomina.NewCFDI_Encabezado_NominaRow
 
-        Try
+                Try
 
-            If rbFinagil.Checked = True Then
-                newrowArfin._1_Folio = tssFolio.Text
-                newrowArfin._2_Nombre_Emisor = "FINAGIL S.A. DE C.V. SOFOM ENR"
-                newrowArfin._3_RFC_Emisor = "FIN940905AX7"
-                newrowArfin._26_Version = "3.3"
-                newrowArfin._27_Serie_Comprobante = "FIN"
-                newrowArfin._29_FormaPago = "99"
-                newrowArfin._30_Fecha = dtpFechaEmision.Value.ToShortDateString
-                newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToShortTimeString
-                newrowArfin._42_Nombre_Receptor = cmbNombre.Text
-                newrowArfin._43_RFC_Receptor = RFCTextBox.Text
+                    If rbFinagil.Checked = True Then
+                        newrowArfin._1_Folio = tssFolio.Text
+                        newrowArfin._2_Nombre_Emisor = "FINAGIL S.A. DE C.V. SOFOM ENR"
+                        newrowArfin._3_RFC_Emisor = "FIN940905AX7"
+                        newrowArfin._26_Version = "3.3"
+                        newrowArfin._27_Serie_Comprobante = "FIN"
+                        newrowArfin._29_FormaPago = "99"
+                        newrowArfin._30_Fecha = dtpFechaEmision.Value.ToShortDateString
+                        newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToString("hh:mm:ss")
+                        newrowArfin._42_Nombre_Receptor = cmbNombre.Text
+                        newrowArfin._43_RFC_Receptor = RFCTextBox.Text
 
-                newrowArfin._54_Monto_SubTotal = CDbl(txtTotalPercepciones.Text)
+                        newrowArfin._54_Monto_SubTotal = CDbl(txtTotalPercepciones.Text)
 
-                newrowArfin._56_Monto_Total = CDbl(txtTotalPercepciones.Text) - CDbl(txtTotalDeducciones.Text)
+                        newrowArfin._56_Monto_Total = CDbl(txtTotalPercepciones.Text) - CDbl(txtTotalDeducciones.Text)
 
-                newrowArfin._57_Estado = "1"
-                newrowArfin._58_TipoCFD = "NM"
-                newrowArfin._83_Cod_Moneda = "MXN"
+                        newrowArfin._57_Estado = "1"
+                        newrowArfin._58_TipoCFD = "NM"
+                        newrowArfin._83_Cod_Moneda = "MXN"
 
-                newrowArfin._89_Monto_Descuento = CDbl(txtTotalDeducciones.Text)
-                newrowArfin._100_Letras_Monto_Total = Letras(newrowArfin._56_Monto_Total, "MXN")
-                newrowArfin._162_Misc50 = MailTextBox.Text
-                newrowArfin._167_RegimentFiscal = "601"
-                newrowArfin._180_LugarExpedicion = "50070"
-                newrowArfin._190_Metodo_Pago = "PUE"
-                newrowArfin._191_Efecto_Comprobante = "N"
-                newrowArfin._142_Misc30 = "FIN" + tssFolio.Text
+                        newrowArfin._89_Monto_Descuento = CDbl(txtTotalDeducciones.Text)
+                        newrowArfin._100_Letras_Monto_Total = Letras(newrowArfin._56_Monto_Total, "MXN")
+                        newrowArfin._162_Misc50 = MailTextBox.Text
+                        newrowArfin._167_RegimentFiscal = "601"
+                        newrowArfin._180_LugarExpedicion = "50070"
+                        newrowArfin._190_Metodo_Pago = "PUE"
+                        newrowArfin._191_Efecto_Comprobante = "N"
+                        newrowArfin._142_Misc30 = "FIN" + tssFolio.Text
 
-                newrowArfin.Encabezado_Procesado = False
+                        newrowArfin.Encabezado_Procesado = False
 
-                Me.ProductionVDataSet.CFDI_Encabezado_Nomina.Rows.Add(newrowArfin)
-                '//Sección Encabezado
-                Dim newrowComNom As ProductionVDataSet.CFDI_Complemento_NominaRow
-                newrowComNom = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+                        Me.ProductionVDataSet.CFDI_Encabezado_Nomina.Rows.Add(newrowArfin)
+                        '//Sección Encabezado
+                        Dim newrowComNom As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNom = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
 
-                newrowComNom.Comp_1 = "¬*NM"
-                newrowComNom.Comp_2 = "Encabezado"
-                newrowComNom.Comp_3 = "1.2"
-                newrowComNom.Comp_4 = cmbTipoNomina.Text
-                newrowComNom.Comp_5 = dtpFechaPago.Value.ToString("yyyy-MM-dd")
-                newrowComNom.Comp_6 = dtpFechaIniPago.Value.ToString("yyyy-MM-dd")
-                newrowComNom.Comp_7 = dtpFechaFinPago.Value.ToString("yyyy-MM-dd")
-                newrowComNom.Comp_8 = txtDiasPagados.Text
-                newrowComNom.Comp_9 = txtTotalPercepciones.Text
-                newrowComNom.Comp_10 = txtTotalDeducciones.Text
-                newrowComNom.Comp_11 = ""
+                        newrowComNom.Comp_1 = "¬*NM"
+                        newrowComNom.Comp_2 = "Encabezado"
+                        newrowComNom.Comp_3 = "1.2"
+                        newrowComNom.Comp_4 = cmbTipoNomina.Text
+                        newrowComNom.Comp_5 = dtpFechaPago.Value.ToString("yyyy-MM-dd")
+                        newrowComNom.Comp_6 = dtpFechaIniPago.Value.ToString("yyyy-MM-dd")
+                        newrowComNom.Comp_7 = dtpFechaFinPago.Value.ToString("yyyy-MM-dd")
+                        newrowComNom.Comp_8 = txtDiasPagados.Text
+                        newrowComNom.Comp_9 = txtTotalPercepciones.Text
+                        newrowComNom.Comp_10 = txtTotalDeducciones.Text
+                        newrowComNom.Comp_11 = ""
 
-                newrowComNom.serie = tssSerie.Text
-                newrowComNom.folio = tssFolio.Text
+                        newrowComNom.serie = tssSerie.Text
+                        newrowComNom.folio = tssFolio.Text
 
-                Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNom)
-                '//Sección Emisor, no hay registro patronal
-                '//Sección receptor1
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNom)
+                        '//Sección Emisor, no hay registro patronal
+                        '//Sección receptor1
 
-                Dim newrowComNomR1 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                newrowComNomR1 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+                        Dim newrowComNomR1 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNomR1 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
 
-                newrowComNomR1.Comp_1 = "NM"
-                newrowComNomR1.Comp_2 = "Receptor1"
-                newrowComNomR1.Comp_3 = CURPTextBox.Text
-                newrowComNomR1.Comp_4 = Seguro_socialTextBox.Text
+                        newrowComNomR1.Comp_1 = "NM"
+                        newrowComNomR1.Comp_2 = "Receptor1"
+                        newrowComNomR1.Comp_3 = CURPTextBox.Text
+                        newrowComNomR1.Comp_4 = Seguro_socialTextBox.Text
 
-                newrowComNomR1.Comp_7 = TipoContratoTextBox.Text
-                newrowComNomR1.Comp_8 = SindicalizadoCheckBox.Checked.ToString.Replace("True", "Sí").Replace("False", "No")
+                        newrowComNomR1.Comp_7 = TipoContratoTextBox.Text
+                        newrowComNomR1.Comp_8 = SindicalizadoCheckBox.Checked.ToString.Replace("True", "Sí").Replace("False", "No")
 
-                newrowComNomR1.Comp_10 = TipoRegimenTextBox.Text
-                newrowComNomR1.Comp_11 = NumEmpleadoTextBox.Text
-                newrowComNomR1.Comp_15 = PeriodicidadPagoTextBox.Text
+                        newrowComNomR1.Comp_10 = TipoRegimenTextBox.Text
+                        newrowComNomR1.Comp_11 = NumEmpleadoTextBox.Text
+                        newrowComNomR1.Comp_15 = PeriodicidadPagoTextBox.Text
 
-                newrowComNomR1.serie = tssSerie.Text
-                newrowComNomR1.folio = tssFolio.Text
+                        newrowComNomR1.serie = tssSerie.Text
+                        newrowComNomR1.folio = tssFolio.Text
 
-                Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR1)
-                'Me.taComplemento.Update(Me.ProductionVDataSet.CFDI_Complemento_Nomina)
-
-
-                '//Sección receptor2
-
-                Dim newrowComNomR2 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                newrowComNomR2 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                newrowComNomR2.Comp_1 = "NM"
-                newrowComNomR2.Comp_2 = "Receptor2"
-                newrowComNomR2.Comp_5 = ClaveEntFedTextBox.Text
-
-                newrowComNomR2.serie = tssSerie.Text
-                newrowComNomR2.folio = tssFolio.Text
-                Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR2)
-
-                '//Subcontratación
-
-                If cmbRFCSubcontrata.Text <> "NO APLICA" Then
-                    Dim newrowComNomR2s As ProductionVDataSet.CFDI_Complemento_NominaRow
-                    newrowComNomR2s = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                    newrowComNomR2s.Comp_1 = "NM"
-                    newrowComNomR2s.Comp_2 = "SubContratacion"
-                    newrowComNomR2s.Comp_4 = cmbRFCSubcontrata.Text
-                    newrowComNomR2s.Comp_5 = (CInt(cmbProSubcontratación.Text) / 100).ToString
-
-                    newrowComNomR2s.serie = tssSerie.Text
-                    newrowComNomR2s.folio = tssFolio.Text
-                    Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR2s)
-                End If
-
-                '//Percepciones
-                Dim newrowComNomR3 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                    newrowComNomR3 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                    newrowComNomR3.Comp_1 = "NM"
-                    newrowComNomR3.Comp_2 = "Percepciones"
-                    newrowComNomR3.Comp_3 = CDbl(txtImporteGravado.Text) + CDbl(txtImporteExcento.Text)
-                    newrowComNomR3.Comp_6 = txtImporteGravado.Text
-                    newrowComNomR3.Comp_7 = txtImporteExcento.Text
-
-                    newrowComNomR3.serie = tssSerie.Text
-                    newrowComNomR3.folio = tssFolio.Text
-                    Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR3)
-                    '//Percepcion
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR1)
+                        'Me.taComplemento.Update(Me.ProductionVDataSet.CFDI_Complemento_Nomina)
 
 
-                    For Each row As DataGridViewRow In dgvPercepcion.Rows
-                        Dim newrowComNomR4 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                        newrowComNomR4 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-                        newrowComNomR4.Comp_1 = "NM"
-                        newrowComNomR4.Comp_2 = "Percepcion"
-                        newrowComNomR4.Comp_3 = row.Cells.Item(0).Value
-                        newrowComNomR4.Comp_4 = row.Cells.Item(1).Value
-                        newrowComNomR4.Comp_5 = row.Cells.Item(2).Value
-                        newrowComNomR4.Comp_6 = row.Cells.Item(3).Value
-                        newrowComNomR4.Comp_7 = row.Cells.Item(4).Value
+                        '//Sección receptor2
 
-                        newrowComNomR4.serie = tssSerie.Text
-                        newrowComNomR4.folio = tssFolio.Text
-                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR4)
-                    Next
+                        Dim newrowComNomR2 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNomR2 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
 
-                    '//Deducciones
-                    Dim newrowComNomR5 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                    newrowComNomR5 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+                        newrowComNomR2.Comp_1 = "NM"
+                        newrowComNomR2.Comp_2 = "Receptor2"
+                        newrowComNomR2.Comp_5 = ClaveEntFedTextBox.Text
 
-                    newrowComNomR5.Comp_1 = "NM"
-                    newrowComNomR5.Comp_2 = "Deducciones"
-                    newrowComNomR5.Comp_3 = txtTotalOtrasDeducciones.Text
-                    newrowComNomR5.Comp_4 = txtTotalImpuestosRetenidos.Text
+                        newrowComNomR2.serie = tssSerie.Text
+                        newrowComNomR2.folio = tssFolio.Text
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR2)
 
-                    newrowComNomR5.serie = tssSerie.Text
-                    newrowComNomR5.folio = tssFolio.Text
-                    Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR5)
-                    '//Percepcion
+                        '//Subcontratación
 
-                    For Each row As DataGridViewRow In dgrDeducciones.Rows
-                        Dim newrowComNomR6 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                        newrowComNomR6 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-                        newrowComNomR6.Comp_1 = "NM"
-                        newrowComNomR6.Comp_2 = "Deduccion"
-                        newrowComNomR6.Comp_3 = row.Cells.Item(0).Value
-                        newrowComNomR6.Comp_4 = row.Cells.Item(1).Value
-                        newrowComNomR6.Comp_5 = row.Cells.Item(2).Value
-                        newrowComNomR6.Comp_6 = row.Cells.Item(3).Value
+                        If cmbRFCSubcontrata.Text <> "NO APLICA" Then
+                            Dim newrowComNomR2s As ProductionVDataSet.CFDI_Complemento_NominaRow
+                            newrowComNomR2s = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
 
-                        newrowComNomR6.serie = tssSerie.Text
-                        newrowComNomR6.folio = tssFolio.Text
-                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR6)
-                    Next
+                            newrowComNomR2s.Comp_1 = "NM"
+                            newrowComNomR2s.Comp_2 = "SubContratacion"
+                            newrowComNomR2s.Comp_4 = cmbRFCSubcontrata.Text
+                            newrowComNomR2s.Comp_5 = (CInt(cmbProSubcontratación.Text) / 100).ToString("F")
 
+                            newrowComNomR2s.serie = tssSerie.Text
+                            newrowComNomR2s.folio = tssFolio.Text
+                            Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR2s)
+                        End If
+
+                        '//Percepciones
+                        Dim newrowComNomR3 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNomR3 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+
+                        newrowComNomR3.Comp_1 = "NM"
+                        newrowComNomR3.Comp_2 = "Percepciones"
+                        newrowComNomR3.Comp_3 = CDbl(txtImporteGravado.Text) + CDbl(txtImporteExcento.Text)
+                        newrowComNomR3.Comp_6 = txtImporteGravado.Text
+                        newrowComNomR3.Comp_7 = txtImporteExcento.Text
+
+                        newrowComNomR3.serie = tssSerie.Text
+                        newrowComNomR3.folio = tssFolio.Text
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR3)
+                        '//Percepcion
 
 
-                    Me.taComplemento.Update(Me.ProductionVDataSet.CFDI_Complemento_Nomina)
-                    Me.taEncabezado.Update(Me.ProductionVDataSet.CFDI_Encabezado_Nomina)
+                        For Each row As DataGridViewRow In dgvPercepcion.Rows
+                            Dim newrowComNomR4 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                            newrowComNomR4 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+                            newrowComNomR4.Comp_1 = "NM"
+                            newrowComNomR4.Comp_2 = "Percepcion"
+                            newrowComNomR4.Comp_3 = row.Cells.Item(0).Value
+                            newrowComNomR4.Comp_4 = row.Cells.Item(1).Value
+                            newrowComNomR4.Comp_5 = row.Cells.Item(2).Value
+                            newrowComNomR4.Comp_6 = row.Cells.Item(3).Value
+                            newrowComNomR4.Comp_7 = row.Cells.Item(4).Value
 
-                    taLlaves.UpdateFolioFinagil(tssFolio.Text)
+                            newrowComNomR4.serie = tssSerie.Text
+                            newrowComNomR4.folio = tssFolio.Text
+                            Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR4)
+                        Next
 
+                        '//Deducciones
+                        Dim newrowComNomR5 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNomR5 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+
+                        newrowComNomR5.Comp_1 = "NM"
+                        newrowComNomR5.Comp_2 = "Deducciones"
+                        newrowComNomR5.Comp_3 = txtTotalOtrasDeducciones.Text
+                        newrowComNomR5.Comp_4 = txtTotalImpuestosRetenidos.Text
+
+                        newrowComNomR5.serie = tssSerie.Text
+                        newrowComNomR5.folio = tssFolio.Text
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR5)
+                        '//Percepcion
+
+                        For Each row As DataGridViewRow In dgrDeducciones.Rows
+                            Dim newrowComNomR6 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                            newrowComNomR6 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+                            newrowComNomR6.Comp_1 = "NM"
+                            newrowComNomR6.Comp_2 = "Deduccion"
+                            newrowComNomR6.Comp_3 = row.Cells.Item(0).Value
+                            newrowComNomR6.Comp_4 = row.Cells.Item(1).Value
+                            newrowComNomR6.Comp_5 = row.Cells.Item(2).Value
+                            newrowComNomR6.Comp_6 = row.Cells.Item(3).Value
+
+                            newrowComNomR6.serie = tssSerie.Text
+                            newrowComNomR6.folio = tssFolio.Text
+                            Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR6)
+                        Next
+
+
+
+                        Me.taComplemento.Update(Me.ProductionVDataSet.CFDI_Complemento_Nomina)
+                        Me.taEncabezado.Update(Me.ProductionVDataSet.CFDI_Encabezado_Nomina)
+
+                        taLlaves.UpdateFolioFinagil(tssFolio.Text)
+
+                    Else
+
+                        newrowArfin._1_Folio = tssFolio.Text
+                        newrowArfin._2_Nombre_Emisor = "SERVICIOS ARFIN S.A. DE C.V."
+                        newrowArfin._3_RFC_Emisor = "SAR951230N5A"
+                        newrowArfin._26_Version = "3.3"
+                        newrowArfin._27_Serie_Comprobante = "SAT"
+                        newrowArfin._29_FormaPago = "99"
+                        newrowArfin._30_Fecha = dtpFechaEmision.Value.ToShortDateString
+                        newrowArfin._31_Hora = newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToString("hh:mm:ss")
+                        newrowArfin._42_Nombre_Receptor = cmbNombre.Text
+                        newrowArfin._43_RFC_Receptor = RFCTextBox.Text
+
+                        newrowArfin._54_Monto_SubTotal = CDbl(txtTotalPercepciones.Text)
+
+                        newrowArfin._56_Monto_Total = CDbl(txtTotalPercepciones.Text) - CDbl(txtTotalDeducciones.Text)
+
+                        newrowArfin._57_Estado = "1"
+                        newrowArfin._58_TipoCFD = "NM"
+                        newrowArfin._83_Cod_Moneda = "MXN"
+
+                        newrowArfin._89_Monto_Descuento = CDbl(txtTotalDeducciones.Text)
+                        newrowArfin._100_Letras_Monto_Total = Letras(newrowArfin._56_Monto_Total, "MXN")
+                        newrowArfin._162_Misc50 = MailTextBox.Text
+                        newrowArfin._167_RegimentFiscal = "601"
+                        newrowArfin._180_LugarExpedicion = "50070"
+                        newrowArfin._190_Metodo_Pago = "PUE"
+                        newrowArfin._191_Efecto_Comprobante = "N"
+                        newrowArfin._142_Misc30 = "SAT" + tssFolio.Text
+
+                        newrowArfin.Encabezado_Procesado = False
+
+                        Me.ProductionVDataSet.CFDI_Encabezado_Nomina.Rows.Add(newrowArfin)
+                        '//Sección Encabezado
+                        Dim newrowComNom As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNom = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+
+                        newrowComNom.Comp_1 = "¬*NM"
+                        newrowComNom.Comp_2 = "Encabezado"
+                        newrowComNom.Comp_3 = "1.2"
+                        newrowComNom.Comp_4 = cmbTipoNomina.Text
+                        newrowComNom.Comp_5 = dtpFechaPago.Value.ToString("yyyy-MM-dd")
+                        newrowComNom.Comp_6 = dtpFechaIniPago.Value.ToString("yyyy-MM-dd")
+                        newrowComNom.Comp_7 = dtpFechaFinPago.Value.ToString("yyyy-MM-dd")
+                        newrowComNom.Comp_8 = txtDiasPagados.Text
+                        newrowComNom.Comp_9 = txtTotalPercepciones.Text
+                        newrowComNom.Comp_10 = txtTotalDeducciones.Text
+                        newrowComNom.Comp_11 = ""
+
+                        newrowComNom.serie = tssSerie.Text
+                        newrowComNom.folio = tssFolio.Text
+
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNom)
+                        '//Sección Emisor, no hay registro patronal
+                        '//Sección receptor1
+
+                        Dim newrowComNomR1 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNomR1 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+
+                        newrowComNomR1.Comp_1 = "NM"
+                        newrowComNomR1.Comp_2 = "Receptor1"
+                        newrowComNomR1.Comp_3 = CURPTextBox.Text
+                        newrowComNomR1.Comp_4 = Seguro_socialTextBox.Text
+
+                        newrowComNomR1.Comp_7 = TipoContratoTextBox.Text
+                        newrowComNomR1.Comp_8 = SindicalizadoCheckBox.Checked.ToString.Replace("True", "Sí").Replace("False", "No")
+
+                        newrowComNomR1.Comp_10 = TipoRegimenTextBox.Text
+                        newrowComNomR1.Comp_11 = NumEmpleadoTextBox.Text
+                        newrowComNomR1.Comp_15 = PeriodicidadPagoTextBox.Text
+
+                        newrowComNomR1.serie = tssSerie.Text
+                        newrowComNomR1.folio = tssFolio.Text
+
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR1)
+                        'Me.taComplemento.Update(Me.ProductionVDataSet.CFDI_Complemento_Nomina)
+
+
+                        '//Sección receptor2
+
+                        Dim newrowComNomR2 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNomR2 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+
+                        newrowComNomR2.Comp_1 = "NM"
+                        newrowComNomR2.Comp_2 = "Receptor2"
+                        newrowComNomR2.Comp_5 = ClaveEntFedTextBox.Text
+
+                        newrowComNomR2.serie = tssSerie.Text
+                        newrowComNomR2.folio = tssFolio.Text
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR2)
+
+                        '//Subcontratación
+
+                        If cmbRFCSubcontrata.Text <> "NO APLICA" Then
+                            Dim newrowComNomR2s As ProductionVDataSet.CFDI_Complemento_NominaRow
+                            newrowComNomR2s = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+
+                            newrowComNomR2s.Comp_1 = "NM"
+                            newrowComNomR2s.Comp_2 = "SubContratacion"
+                            newrowComNomR2s.Comp_4 = cmbRFCSubcontrata.Text
+                            newrowComNomR2s.Comp_5 = (CInt(cmbProSubcontratación.Text) / 100).ToString
+
+                            newrowComNomR2s.serie = tssSerie.Text
+                            newrowComNomR2s.folio = tssFolio.Text
+                            Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR2s)
+                        End If
+                        '//Percepciones
+                        Dim newrowComNomR3 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNomR3 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+
+                        newrowComNomR3.Comp_1 = "NM"
+                        newrowComNomR3.Comp_2 = "Percepciones"
+                        newrowComNomR3.Comp_3 = CDbl(txtImporteGravado.Text) + CDbl(txtImporteExcento.Text)
+                        newrowComNomR3.Comp_6 = txtImporteGravado.Text
+                        newrowComNomR3.Comp_7 = txtImporteExcento.Text
+
+                        newrowComNomR3.serie = tssSerie.Text
+                        newrowComNomR3.folio = tssFolio.Text
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR3)
+                        '//Percepcion
+
+
+                        For Each row As DataGridViewRow In dgvPercepcion.Rows
+                            Dim newrowComNomR4 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                            newrowComNomR4 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+                            newrowComNomR4.Comp_1 = "NM"
+                            newrowComNomR4.Comp_2 = "Percepcion"
+                            newrowComNomR4.Comp_3 = row.Cells.Item(0).Value
+                            newrowComNomR4.Comp_4 = row.Cells.Item(1).Value
+                            newrowComNomR4.Comp_5 = row.Cells.Item(2).Value
+                            newrowComNomR4.Comp_6 = row.Cells.Item(3).Value
+                            newrowComNomR4.Comp_7 = row.Cells.Item(4).Value
+
+                            newrowComNomR4.serie = tssSerie.Text
+                            newrowComNomR4.folio = tssFolio.Text
+                            Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR4)
+                        Next
+
+                        '//Deducciones
+                        Dim newrowComNomR5 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                        newrowComNomR5 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+
+                        newrowComNomR5.Comp_1 = "NM"
+                        newrowComNomR5.Comp_2 = "Deducciones"
+                        newrowComNomR5.Comp_3 = txtTotalOtrasDeducciones.Text
+                        newrowComNomR5.Comp_4 = txtTotalImpuestosRetenidos.Text
+
+                        newrowComNomR5.serie = tssSerie.Text
+                        newrowComNomR5.folio = tssFolio.Text
+                        Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR5)
+                        '//Percepcion
+
+                        For Each row As DataGridViewRow In dgrDeducciones.Rows
+                            Dim newrowComNomR6 As ProductionVDataSet.CFDI_Complemento_NominaRow
+                            newrowComNomR6 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
+                            newrowComNomR6.Comp_1 = "NM"
+                            newrowComNomR6.Comp_2 = "Deduccion"
+                            newrowComNomR6.Comp_3 = row.Cells.Item(0).Value
+                            newrowComNomR6.Comp_4 = row.Cells.Item(1).Value
+                            newrowComNomR6.Comp_5 = row.Cells.Item(2).Value
+                            newrowComNomR6.Comp_6 = row.Cells.Item(3).Value
+
+                            newrowComNomR6.serie = tssSerie.Text
+                            newrowComNomR6.folio = tssFolio.Text
+                            Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR6)
+                        Next
+
+                        Me.taComplemento.Update(Me.ProductionVDataSet.CFDI_Complemento_Nomina)
+                        Me.taEncabezado.Update(Me.ProductionVDataSet.CFDI_Encabezado_Nomina)
+
+                        taLlaves.UpdateFolioArfin(tssFolio.Text)
+                    End If
+
+                Catch ex As Exception
+                    MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
+                End Try
+
+                limpiar()
+
+                MsgBox("Se emitió correctamente el recibo de nómina: " + tssSerie.Text + " - " + tssFolio.Text, MsgBoxStyle.Exclamation)
+
+                '*******************
+                If rbFinagil.Checked = True Then
+                    tssFolio.Text = taLlaves.Folio_Finagil
+                    tssSerie.Text = "FIN"
                 Else
-
-                    newrowArfin._1_Folio = tssFolio.Text
-                newrowArfin._2_Nombre_Emisor = "SERVICIOS ARFIN S.A. DE C.V."
-                newrowArfin._3_RFC_Emisor = "SAR951230N5A"
-                newrowArfin._26_Version = "3.3"
-                newrowArfin._27_Serie_Comprobante = "SAT"
-                newrowArfin._29_FormaPago = "99"
-                newrowArfin._30_Fecha = dtpFechaEmision.Value.ToShortDateString
-                newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToShortTimeString
-                newrowArfin._42_Nombre_Receptor = cmbNombre.Text
-                newrowArfin._43_RFC_Receptor = RFCTextBox.Text
-
-                newrowArfin._54_Monto_SubTotal = CDbl(txtTotalPercepciones.Text)
-
-                newrowArfin._56_Monto_Total = CDbl(txtTotalPercepciones.Text) - CDbl(txtTotalDeducciones.Text)
-
-                newrowArfin._57_Estado = "1"
-                newrowArfin._58_TipoCFD = "NM"
-                newrowArfin._83_Cod_Moneda = "MXN"
-
-                newrowArfin._89_Monto_Descuento = CDbl(txtTotalDeducciones.Text)
-                newrowArfin._100_Letras_Monto_Total = Letras(newrowArfin._56_Monto_Total, "MXN")
-                newrowArfin._162_Misc50 = MailTextBox.Text
-                newrowArfin._167_RegimentFiscal = "601"
-                newrowArfin._180_LugarExpedicion = "50070"
-                newrowArfin._190_Metodo_Pago = "PUE"
-                newrowArfin._191_Efecto_Comprobante = "N"
-                newrowArfin._142_Misc30 = "SAT" + tssFolio.Text
-
-                newrowArfin.Encabezado_Procesado = False
-
-                Me.ProductionVDataSet.CFDI_Encabezado_Nomina.Rows.Add(newrowArfin)
-                '//Sección Encabezado
-                Dim newrowComNom As ProductionVDataSet.CFDI_Complemento_NominaRow
-                newrowComNom = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                newrowComNom.Comp_1 = "¬*NM"
-                newrowComNom.Comp_2 = "Encabezado"
-                newrowComNom.Comp_3 = "1.2"
-                newrowComNom.Comp_4 = cmbTipoNomina.SelectedValue
-                newrowComNom.Comp_5 = dtpFechaPago.Value.ToShortDateString
-                newrowComNom.Comp_6 = dtpFechaIniPago.Value.ToShortDateString
-                newrowComNom.Comp_7 = dtpFechaFinPago.Value.ToShortDateString
-                newrowComNom.Comp_8 = txtDiasPagados.Text
-                newrowComNom.Comp_9 = txtTotalPercepciones.Text
-                newrowComNom.Comp_10 = txtTotalDeducciones.Text
-                newrowComNom.Comp_11 = ""
-
-                newrowComNom.serie = tssSerie.Text
-                newrowComNom.folio = tssFolio.Text
-
-                Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNom)
-                '//Sección Emisor, no hay registro patronal
-                '//Sección receptor1
-
-                Dim newrowComNomR1 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                newrowComNomR1 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                newrowComNomR1.Comp_1 = "NM"
-                newrowComNomR1.Comp_2 = "Receptor1"
-                newrowComNomR1.Comp_3 = CURPTextBox.Text
-                newrowComNomR1.Comp_4 = Seguro_socialTextBox.Text
-
-                newrowComNomR1.Comp_7 = TipoContratoTextBox.Text
-                newrowComNomR1.Comp_8 = SindicalizadoCheckBox.Checked.ToString.Replace("True", "Sí").Replace("False", "No")
-
-                newrowComNomR1.Comp_10 = TipoRegimenTextBox.Text
-                newrowComNomR1.Comp_11 = NumEmpleadoTextBox.Text
-                newrowComNomR1.Comp_15 = PeriodicidadPagoTextBox.Text
-
-                newrowComNomR1.serie = tssSerie.Text
-                newrowComNomR1.folio = tssFolio.Text
-
-                Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR1)
-                'Me.taComplemento.Update(Me.ProductionVDataSet.CFDI_Complemento_Nomina)
-
-
-                '//Sección receptor2
-
-                Dim newrowComNomR2 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                newrowComNomR2 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                newrowComNomR2.Comp_1 = "NM"
-                newrowComNomR2.Comp_2 = "Receptor2"
-                newrowComNomR2.Comp_5 = ClaveEntFedTextBox.Text
-
-                newrowComNomR2.serie = tssSerie.Text
-                newrowComNomR2.folio = tssFolio.Text
-                Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR2)
-
-                '//Subcontratación
-
-                If cmbRFCSubcontrata.Text <> "NO APLICA" Then
-                    Dim newrowComNomR2s As ProductionVDataSet.CFDI_Complemento_NominaRow
-                    newrowComNomR2s = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                    newrowComNomR2s.Comp_1 = "NM"
-                    newrowComNomR2s.Comp_2 = "SubContratacion"
-                    newrowComNomR2s.Comp_4 = cmbRFCSubcontrata.Text
-                    newrowComNomR2s.Comp_5 = (CInt(cmbProSubcontratación.Text) / 100).ToString
-
-                    newrowComNomR2s.serie = tssSerie.Text
-                    newrowComNomR2s.folio = tssFolio.Text
-                    Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR2s)
+                    tssFolio.Text = taLlaves.Folio_Arfin
+                    tssSerie.Text = "SAT"
                 End If
-                '//Percepciones
-                Dim newrowComNomR3 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                newrowComNomR3 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                newrowComNomR3.Comp_1 = "NM"
-                newrowComNomR3.Comp_2 = "Percepciones"
-                newrowComNomR3.Comp_3 = CDbl(txtImporteGravado.Text) + CDbl(txtImporteExcento.Text)
-                newrowComNomR3.Comp_6 = txtImporteGravado.Text
-                newrowComNomR3.Comp_7 = txtImporteExcento.Text
-
-                newrowComNomR3.serie = tssSerie.Text
-                newrowComNomR3.folio = tssFolio.Text
-                Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR3)
-                '//Percepcion
-
-
-                For Each row As DataGridViewRow In dgvPercepcion.Rows
-                    Dim newrowComNomR4 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                    newrowComNomR4 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-                    newrowComNomR4.Comp_1 = "NM"
-                    newrowComNomR4.Comp_2 = "Percepcion"
-                    newrowComNomR4.Comp_3 = row.Cells.Item(0).Value
-                    newrowComNomR4.Comp_4 = row.Cells.Item(1).Value
-                    newrowComNomR4.Comp_5 = row.Cells.Item(2).Value
-                    newrowComNomR4.Comp_6 = row.Cells.Item(3).Value
-                    newrowComNomR4.Comp_7 = row.Cells.Item(4).Value
-
-                    newrowComNomR4.serie = tssSerie.Text
-                    newrowComNomR4.folio = tssFolio.Text
-                    Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR4)
-                Next
-
-                '//Deducciones
-                Dim newrowComNomR5 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                newrowComNomR5 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-
-                newrowComNomR5.Comp_1 = "NM"
-                newrowComNomR5.Comp_2 = "Deducciones"
-                newrowComNomR5.Comp_3 = txtTotalOtrasDeducciones.Text
-                newrowComNomR5.Comp_4 = txtTotalImpuestosRetenidos.Text
-
-                newrowComNomR5.serie = tssSerie.Text
-                newrowComNomR5.folio = tssFolio.Text
-                Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR5)
-                '//Percepcion
-
-                For Each row As DataGridViewRow In dgrDeducciones.Rows
-                    Dim newrowComNomR6 As ProductionVDataSet.CFDI_Complemento_NominaRow
-                    newrowComNomR6 = Me.ProductionVDataSet.CFDI_Complemento_Nomina.NewCFDI_Complemento_NominaRow
-                    newrowComNomR6.Comp_1 = "NM"
-                    newrowComNomR6.Comp_2 = "Deduccion"
-                    newrowComNomR6.Comp_3 = row.Cells.Item(0).Value
-                    newrowComNomR6.Comp_4 = row.Cells.Item(1).Value
-                    newrowComNomR6.Comp_5 = row.Cells.Item(2).Value
-                    newrowComNomR6.Comp_6 = row.Cells.Item(3).Value
-
-                    newrowComNomR6.serie = tssSerie.Text
-                    newrowComNomR6.folio = tssFolio.Text
-                    Me.ProductionVDataSet.CFDI_Complemento_Nomina.Rows.Add(newrowComNomR6)
-                Next
-
-                Me.taComplemento.Update(Me.ProductionVDataSet.CFDI_Complemento_Nomina)
-                Me.taEncabezado.Update(Me.ProductionVDataSet.CFDI_Encabezado_Nomina)
-
-                taLlaves.UpdateFolioArfin(tssFolio.Text)
+                dtpFechaEmision.MinDate = Now.AddDays(-3)
+                dtpFechaEmision.MaxDate = Now
+            Else
+                MsgBox("Proceso cancelado", MsgBoxStyle.Exclamation)
             End If
-
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        End Try
-
-        limpiar()
+        Else
+                MsgBox("No se ha seleccionado un empleado...", MsgBoxStyle.Exclamation)
+        End If
 
     End Sub
 
@@ -418,6 +443,8 @@
         txtImporteDeduccion.Text = "0"
         dgrDeducciones.Rows.Clear()
         dgvPercepcion.Rows.Clear()
+        cmbRFCSubcontrata.Text = "NO APLICA"
+        'lblEmisor.Text = ""
     End Sub
 
     Public Function Letras(ByVal numero As String, ByVal moneda As String) As String
@@ -754,7 +781,7 @@
         txtTotalGravado.Text = totalgravado.ToString
         txtTotalExento.Text = totalexento.ToString
         txtTotalSueldos.Text = (totalexento + totalgravado).ToString
-
+        txtTotalAPagar.Text = CDbl(txtTotalPercepciones.Text) - CDbl(txtTotalDeducciones.Text)
     End Sub
 
     Private Sub dgvPercepcion_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvPercepcion.RowsRemoved
@@ -773,6 +800,7 @@
         txtTotalGravado.Text = totalgravado.ToString
         txtTotalExento.Text = totalexento.ToString
         txtTotalSueldos.Text = (totalexento + totalgravado).ToString
+        txtTotalAPagar.Text = CDbl(txtTotalPercepciones.Text) - CDbl(txtTotalDeducciones.Text)
     End Sub
 
     Private Sub txtTotalSueldos_TextChanged(sender As Object, e As EventArgs) Handles txtTotalSueldos.TextChanged
@@ -802,6 +830,7 @@
         txtTotalOtrasDeducciones.Text = totalOtrasDeducciones.ToString
         txtTotalImpuestosRetenidos.Text = totalImpuestosRetenidos.ToString
         txtTotalDeducciones.Text = CDbl(totalOtrasDeducciones + totalImpuestosRetenidos)
+        txtTotalAPagar.Text = CDbl(txtTotalPercepciones.Text) - CDbl(txtTotalDeducciones.Text)
     End Sub
 
     Private Sub dgrDeducciones_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgrDeducciones.RowsRemoved
@@ -823,6 +852,7 @@
         txtTotalOtrasDeducciones.Text = totalOtrasDeducciones.ToString
         txtTotalImpuestosRetenidos.Text = totalImpuestosRetenidos.ToString
         txtTotalDeducciones.Text = CDbl(totalOtrasDeducciones + totalImpuestosRetenidos)
+        txtTotalAPagar.Text = CDbl(txtTotalPercepciones.Text) - CDbl(txtTotalDeducciones.Text)
     End Sub
 
     Private Sub btnAgregarDeduccion_Click(sender As Object, e As EventArgs) Handles btnAgregarDeduccion.Click
@@ -843,5 +873,9 @@
         Else
             cmbProSubcontratación.Enabled = False
         End If
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        lblTimer.Text = Date.Now.AddHours(-1).ToLongTimeString
     End Sub
 End Class
