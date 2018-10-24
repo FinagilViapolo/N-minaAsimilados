@@ -240,7 +240,7 @@
                         newrowArfin._27_Serie_Comprobante = "SAT"
                         newrowArfin._29_FormaPago = "99"
                         newrowArfin._30_Fecha = dtpFechaEmision.Value.ToShortDateString
-                        newrowArfin._31_Hora = newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToString("hh:mm:ss")
+                        newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToString("hh:mm:ss")
                         newrowArfin._42_Nombre_Receptor = cmbNombre.Text
                         newrowArfin._43_RFC_Receptor = RFCTextBox.Text
 
