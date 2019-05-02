@@ -1,4 +1,7 @@
-﻿Public Class frmNomina
+﻿Imports System
+Imports System.Collections
+Imports System.Globalization
+Public Class frmNomina
 
     Dim taLlaves As New ProductionVDataSetTableAdapters.LlavesTableAdapter
     Dim taEncabezado As New ProductionVDataSetTableAdapters.CFDI_Encabezado_NominaTableAdapter
@@ -34,6 +37,7 @@
         End If
         dtpFechaEmision.MinDate = Now.AddDays(-3)
         dtpFechaEmision.MaxDate = Now
+
         limpiar()
     End Sub
 
@@ -65,7 +69,7 @@
                         newrowArfin._27_Serie_Comprobante = "FIN"
                         newrowArfin._29_FormaPago = "99"
                         newrowArfin._30_Fecha = dtpFechaEmision.Value.ToShortDateString
-                        newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToString("hh:mm:ss")
+                        newrowArfin._31_Hora = CDate(dtpFechaEmision.Value.AddHours(-1)).ToString("hh:mm:ss", CultureInfo.InvariantCulture)
                         newrowArfin._42_Nombre_Receptor = cmbNombre.Text
                         newrowArfin._43_RFC_Receptor = RFCTextBox.Text
 
@@ -97,9 +101,9 @@
                         newrowComNom.Comp_2 = "Encabezado"
                         newrowComNom.Comp_3 = "1.2"
                         newrowComNom.Comp_4 = cmbTipoNomina.Text
-                        newrowComNom.Comp_5 = dtpFechaPago.Value.ToString("yyyy-MM-dd")
-                        newrowComNom.Comp_6 = dtpFechaIniPago.Value.ToString("yyyy-MM-dd")
-                        newrowComNom.Comp_7 = dtpFechaFinPago.Value.ToString("yyyy-MM-dd")
+                        newrowComNom.Comp_5 = dtpFechaPago.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
+                        newrowComNom.Comp_6 = dtpFechaIniPago.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
+                        newrowComNom.Comp_7 = dtpFechaFinPago.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
                         newrowComNom.Comp_8 = txtDiasPagados.Text
                         newrowComNom.Comp_9 = txtTotalPercepciones.Text
                         newrowComNom.Comp_10 = txtTotalDeducciones.Text
@@ -240,7 +244,7 @@
                         newrowArfin._27_Serie_Comprobante = "SAT"
                         newrowArfin._29_FormaPago = "99"
                         newrowArfin._30_Fecha = dtpFechaEmision.Value.ToShortDateString
-                        newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToString("hh:mm:ss")
+                        newrowArfin._31_Hora = dtpFechaEmision.Value.AddHours(-1).ToString("h:mm:ss", CultureInfo.InvariantCulture)
                         newrowArfin._42_Nombre_Receptor = cmbNombre.Text
                         newrowArfin._43_RFC_Receptor = RFCTextBox.Text
 
@@ -272,9 +276,9 @@
                         newrowComNom.Comp_2 = "Encabezado"
                         newrowComNom.Comp_3 = "1.2"
                         newrowComNom.Comp_4 = cmbTipoNomina.Text
-                        newrowComNom.Comp_5 = dtpFechaPago.Value.ToString("yyyy-MM-dd")
-                        newrowComNom.Comp_6 = dtpFechaIniPago.Value.ToString("yyyy-MM-dd")
-                        newrowComNom.Comp_7 = dtpFechaFinPago.Value.ToString("yyyy-MM-dd")
+                        newrowComNom.Comp_5 = dtpFechaPago.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
+                        newrowComNom.Comp_6 = dtpFechaIniPago.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
+                        newrowComNom.Comp_7 = dtpFechaFinPago.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
                         newrowComNom.Comp_8 = txtDiasPagados.Text
                         newrowComNom.Comp_9 = txtTotalPercepciones.Text
                         newrowComNom.Comp_10 = txtTotalDeducciones.Text
@@ -426,7 +430,7 @@
                 MsgBox("Proceso cancelado", MsgBoxStyle.Exclamation)
             End If
         Else
-                MsgBox("No se ha seleccionado un empleado...", MsgBoxStyle.Exclamation)
+            MsgBox("No se ha seleccionado un empleado...", MsgBoxStyle.Exclamation)
         End If
 
     End Sub
@@ -445,6 +449,19 @@
         dgvPercepcion.Rows.Clear()
         cmbRFCSubcontrata.Text = "NO APLICA"
         'lblEmisor.Text = ""
+
+        If rbFinagil.Checked = True Then
+            tssFolio.Text = taLlaves.Folio_Finagil
+            tssSerie.Text = "FIN"
+            lblEmisor.Text = "Emisor: FINAGIL S.A. DE C.V. SOFOM ENR"
+        Else
+            tssFolio.Text = taLlaves.Folio_Arfin
+            tssSerie.Text = "SAT"
+            lblEmisor.Text = "Emisor: SERVICIOS ARFIN S.A. DE C.V."
+        End If
+        dtpFechaEmision.MinDate = Now.AddDays(-3)
+        dtpFechaEmision.MaxDate = Now
+
     End Sub
 
     Public Function Letras(ByVal numero As String, ByVal moneda As String) As String

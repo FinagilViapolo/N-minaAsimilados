@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmNomina
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmNomina
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim RFCLabel As System.Windows.Forms.Label
@@ -34,6 +34,8 @@ Partial Class frmNomina
         Dim Seguro_socialLabel As System.Windows.Forms.Label
         Dim NumEmpleadoLabel As System.Windows.Forms.Label
         Me.gbEmisor = New System.Windows.Forms.GroupBox()
+        Me.lblEmisor = New System.Windows.Forms.Label()
+        Me.lblTimer = New System.Windows.Forms.Label()
         Me.dtpFechaEmision = New System.Windows.Forms.DateTimePicker()
         Me.rbArfin = New System.Windows.Forms.RadioButton()
         Me.rbFinagil = New System.Windows.Forms.RadioButton()
@@ -133,11 +135,9 @@ Partial Class frmNomina
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.cmbProSubcontratación = New System.Windows.Forms.ComboBox()
         Me.Label19 = New System.Windows.Forms.Label()
-        Me.lblTimer = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Label24 = New System.Windows.Forms.Label()
         Me.txtTotalAPagar = New System.Windows.Forms.TextBox()
-        Me.lblEmisor = New System.Windows.Forms.Label()
         RFCLabel = New System.Windows.Forms.Label()
         TipoContratoLabel = New System.Windows.Forms.Label()
         SindicalizadoLabel = New System.Windows.Forms.Label()
@@ -268,6 +268,25 @@ Partial Class frmNomina
         Me.gbEmisor.TabIndex = 0
         Me.gbEmisor.TabStop = False
         Me.gbEmisor.Text = "Emisor"
+        '
+        'lblEmisor
+        '
+        Me.lblEmisor.AutoSize = True
+        Me.lblEmisor.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEmisor.Location = New System.Drawing.Point(143, 16)
+        Me.lblEmisor.Name = "lblEmisor"
+        Me.lblEmisor.Size = New System.Drawing.Size(0, 13)
+        Me.lblEmisor.TabIndex = 4
+        '
+        'lblTimer
+        '
+        Me.lblTimer.AutoSize = True
+        Me.lblTimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTimer.Location = New System.Drawing.Point(628, 16)
+        Me.lblTimer.Name = "lblTimer"
+        Me.lblTimer.Size = New System.Drawing.Size(52, 13)
+        Me.lblTimer.TabIndex = 3
+        Me.lblTimer.Text = "Label24"
         '
         'dtpFechaEmision
         '
@@ -1211,16 +1230,6 @@ Partial Class frmNomina
         Me.Label19.TabIndex = 26
         Me.Label19.Text = "Porcentaje de subcontratación:"
         '
-        'lblTimer
-        '
-        Me.lblTimer.AutoSize = True
-        Me.lblTimer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTimer.Location = New System.Drawing.Point(628, 16)
-        Me.lblTimer.Name = "lblTimer"
-        Me.lblTimer.Size = New System.Drawing.Size(52, 13)
-        Me.lblTimer.TabIndex = 3
-        Me.lblTimer.Text = "Label24"
-        '
         'Timer1
         '
         Me.Timer1.Enabled = True
@@ -1242,15 +1251,6 @@ Partial Class frmNomina
         Me.txtTotalAPagar.Name = "txtTotalAPagar"
         Me.txtTotalAPagar.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalAPagar.TabIndex = 39
-        '
-        'lblEmisor
-        '
-        Me.lblEmisor.AutoSize = True
-        Me.lblEmisor.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblEmisor.Location = New System.Drawing.Point(143, 16)
-        Me.lblEmisor.Name = "lblEmisor"
-        Me.lblEmisor.Size = New System.Drawing.Size(0, 13)
-        Me.lblEmisor.TabIndex = 4
         '
         'frmNomina
         '
